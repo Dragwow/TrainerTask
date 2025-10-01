@@ -47,9 +47,10 @@ services:
     ports:
       - "8081:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5440/userdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5440/userdb
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: pass
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
     depends_on:
       - user-db
       - eureka-server
@@ -60,9 +61,18 @@ services:
     ports:
       - "8082:8082"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5441/companydb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://company-db:5441/companydb
       SPRING_DATASOURCE_USERNAME: company
       SPRING_DATASOURCE_PASSWORD: pass
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
     depends_on:
       - company-db
+      - eureka-server
+
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    depends_on:
       - eureka-server
