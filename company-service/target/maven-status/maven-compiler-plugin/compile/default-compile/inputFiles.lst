@@ -3,8 +3,7 @@
 /home/yumimi/IdeaProjects/TrainerTask/company-service/src/main/java/com/yumimi/controller/CompanyController.java
 /home/yumimi/IdeaProjects/TrainerTask/company-service/src/main/java/com/yumimi/db/request/CompanyRequest.java
 /home/yumimi/IdeaProjects/TrainerTask/company-service/src/main/java/com/yumimi/db/response/CompanyResponse.java
-/home/yumimi/IdeaProjects/TrainerTask/company-service/src/main/java/com/yumimi/db/response/ResponseContainer.java
-/home/yumimi/IdeaProjects/TrainerTask/company-service/src/main/java/com/yumimi/db/response/UsersResponse.java
+/home/yumimi/IdeaProjects/TrainerTask/company-service/src/main/java/com/yumimi/db/response/UserResponse.java
 /home/yumimi/IdeaProjects/TrainerTask/company-service/src/main/java/com/yumimi/entity/BaseEntity.java
 /home/yumimi/IdeaProjects/TrainerTask/company-service/src/main/java/com/yumimi/entity/Company.java
 /home/yumimi/IdeaProjects/TrainerTask/company-service/src/main/java/com/yumimi/exception/CompanyNotFoundException.java

@@ -1,9 +1,12 @@
 package com.yumimi.repository;
 
-import com.yumimi.entity.User;
+import com.yumimi.entity.Users;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface UserRepository extends BaseRepository<User>{
+import java.util.List;
 
+@Repository
+public interface UserRepository extends BaseRepository<Users>{
+
+    List<Users> findByCompanyId( Long companyId);
 }

@@ -1,7 +1,10 @@
 package com.yumimi.service;
 
-import com.yumimi.entity.User;
+import com.yumimi.entity.Users;
 
-public interface UserService extends CrudService<User> {
+import java.util.List;
 
+public interface UserService extends CrudService<Users>{
+
+    List<Users> listByCompanyId(Long companyId);
 }

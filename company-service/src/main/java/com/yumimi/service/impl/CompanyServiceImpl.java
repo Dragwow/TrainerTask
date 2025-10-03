@@ -1,11 +1,13 @@
 package com.yumimi.service.impl;
 
+
 import com.yumimi.entity.Company;
 import com.yumimi.exception.CompanyNotFoundException;
 import com.yumimi.repository.CompanyRepository;
 import com.yumimi.service.CompanyService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Company findById(Long id) {
         return repository.findById(id)
             .orElseThrow(() -> new CompanyNotFoundException("Company not founded"));

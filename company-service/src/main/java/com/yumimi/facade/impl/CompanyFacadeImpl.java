@@ -3,78 +3,74 @@ package com.yumimi.facade.impl;
 import com.yumimi.client.UsersClient;
 import com.yumimi.db.request.CompanyRequest;
 import com.yumimi.db.response.CompanyResponse;
+import com.yumimi.db.response.UserResponse;
 import com.yumimi.entity.Company;
 import com.yumimi.facade.CompanyFacade;
 import com.yumimi.service.CompanyService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CompanyFacadeImpl implements CompanyFacade {
 
     private final CompanyService companyService;
     private final UsersClient usersClient;
 
-    @Override
-    public CompanyResponse createCompany(CompanyRequest request) {
-        Company company = new Company();
 
+    @Override
+    public void create(CompanyRequest request) {
+        Company company = new Company();
         company.setName(request.getName());
         company.setBudget(request.getBudget());
-
         companyService.create(company);
-
-        return companyResponse(company);
     }
 
     @Override
-    public CompanyResponse updateCompany(Long id, CompanyRequest request) {
+    public void update(Long id, CompanyRequest request) {
         Company company = companyService.findById(id);
-
-        if (request.getName() != null) company.setName(request.getName());
-        if (request.getBudget() != null) company.setBudget(request.getBudget());
-
+        company.setName(request.getName());
+        company.setBudget(request.getBudget());
         companyService.update(company);
-
-        return companyResponse(company);
     }
 
     @Override
-    public void deleteCompany(Long id) {
+    public void delete(Long id) {
         Company company = companyService.findById(id);
         companyService.delete(company);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public List<CompanyResponse> getAllCompanies() {
-        return companyService.findAll()
-            .stream()
-            .map(this::companyResponse)
-            .toList();
-    }
-
-    @Override
-    public CompanyResponse getCompanyById(Long id) {
+    public CompanyResponse getById(Long id) {
         Company company = companyService.findById(id);
-        return companyResponse(company);
+        List<UserResponse> users = getFullUsers(company);
+        return new CompanyResponse(company, users);
     }
 
-    private CompanyResponse companyResponse(Company company) {
-        CompanyResponse response = new CompanyResponse(company);
-
-        if (company.getUsersId() != null && !company.getUsersId().isEmpty()) {
-            try {
-                response.setUsers(usersClient.getAllUsersById(company.getUsersId()));
-            } catch (Exception e) {
-                response.setUsers(List.of());
-            }
-        } else {
-            response.setUsers(List.of());
+    @Transactional(readOnly = true)
+    @Override
+    public List<CompanyResponse> getAll() {
+        List<Company> companies = companyService.findAll();
+        List<CompanyResponse> listCompanies = new ArrayList<>();
+        for (Company c : companies) {
+            listCompanies.add(new CompanyResponse(c, getFullUsers(c)));
         }
+        return listCompanies;
+    }
 
-        return response;
+    @Override
+    public void addUserToCompany(Long id, Long userId) {
+        Company company = companyService.findById(id);
+        usersClient.assignCompany(userId, id);
+        companyService.update(company);
+    }
+
+    private List<UserResponse> getFullUsers(Company company) {
+        return usersClient.getAllByCompanyId(company.getId());
     }
 }

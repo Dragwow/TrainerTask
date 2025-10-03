@@ -1,6 +1,6 @@
 package com.yumimi.service.impl;
 
-import com.yumimi.entity.User;
+import com.yumimi.entity.Users;
 import com.yumimi.exception.UserNotFoundException;
 import com.yumimi.repository.UserRepository;
 import com.yumimi.service.UserService;
@@ -16,28 +16,34 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
 
     @Override
-    public void create(User user) {
+    public void create(Users user) {
         repository.save(user);
     }
 
     @Override
-    public void update(User user) {
+    public void update(Users user) {
         repository.save(user);
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(Users user) {
         repository.delete(user);
     }
 
     @Override
-    public List<User> findAll() {
+    public List<Users> findAll() {
         return repository.findAll();
     }
 
     @Override
-    public User findById(Long id) {
+    public Users findById(Long id) {
         return repository.findById(id)
             .orElseThrow(() -> new UserNotFoundException("User not founded"));
+    }
+
+
+    @Override
+    public List<Users> listByCompanyId(Long companyId) {
+        return repository.findByCompanyId(companyId);
     }
 }

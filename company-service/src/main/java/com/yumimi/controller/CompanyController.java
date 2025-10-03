@@ -2,10 +2,8 @@ package com.yumimi.controller;
 
 import com.yumimi.db.request.CompanyRequest;
 import com.yumimi.db.response.CompanyResponse;
-import com.yumimi.db.response.ResponseContainer;
 import com.yumimi.facade.CompanyFacade;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,42 +17,45 @@ public class CompanyController {
     private final CompanyFacade companyFacade;
 
     @PostMapping
-    public ResponseEntity<ResponseContainer<CompanyResponse>> create(
+    public void create(
         @RequestBody
         CompanyRequest request) {
-        return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(new ResponseContainer<>(companyFacade.createCompany(request)));
+        companyFacade.create(request);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseContainer<CompanyResponse>> update(
-        @PathVariable
+    public void update(
+        @PathVariable("id")
         Long id,
         @RequestBody
         CompanyRequest request) {
-        return ResponseEntity
-            .ok(new ResponseContainer<>(companyFacade.updateCompany(id, request)));
+        companyFacade.update(id, request);
     }
 
     @DeleteMapping("/{id}")
     public void delete(
-        @PathVariable
+        @PathVariable("id")
         Long id) {
-        companyFacade.deleteCompany(id);
+        companyFacade.delete(id);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseContainer<CompanyResponse>> getById(
-        @PathVariable
+    public ResponseEntity<CompanyResponse> getById(
+        @PathVariable("id")
         Long id) {
         return ResponseEntity
-            .ok(new ResponseContainer<>(companyFacade.getCompanyById(id)));
+            .ok(companyFacade.getById(id));
     }
 
     @GetMapping
     public List<CompanyResponse> getAll() {
-        return companyFacade.getAllCompanies();
+        return companyFacade.getAll();
     }
 
+    @PostMapping("/{companyId}/add-user/{userId}")
+    public void addUserToCompany(
+        @PathVariable("companyId") Long companyId,
+        @PathVariable("userId") Long userId){
+        companyFacade.addUserToCompany(companyId, userId);
+    }
 }

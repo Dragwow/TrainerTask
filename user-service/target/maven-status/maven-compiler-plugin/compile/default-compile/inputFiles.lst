@@ -3,10 +3,9 @@
 /home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/controller/UserController.java
 /home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/db/request/UserRequest.java
 /home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/db/response/CompanyResponse.java
-/home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/db/response/ResponseContainer.java
 /home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/db/response/UserResponse.java
 /home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/entity/BaseEntity.java
-/home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/entity/User.java
+/home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/entity/Users.java
 /home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/exception/UserNotFoundException.java
 /home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/facade/UserFacade.java
 /home/yumimi/IdeaProjects/TrainerTask/user-service/src/main/java/com/yumimi/facade/impl/UserFacadeImpl.java

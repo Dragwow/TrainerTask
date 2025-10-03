@@ -1,3 +1,6 @@
+networks:
+  my-network:
+
 services:
 
   user-db:
@@ -7,13 +10,15 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: userdb
-    ports:
-      - "5440:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d userdb"]
+      test: [ "CMD-SHELL", "pg_isready -U user -d userdb" ]
       interval: 5s
       timeout: 5s
       retries: 5
+    ports:
+      - "5440:5432"
+    networks:
+      - my-network
 
   company-db:
     image: postgres:15
@@ -22,13 +27,15 @@ services:
       POSTGRES_USER: company
       POSTGRES_PASSWORD: pass
       POSTGRES_DB: companydb
-    ports:
-      - "5441:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U company -d companydb" ]
       interval: 5s
       timeout: 5s
       retries: 5
+    ports:
+      - "5441:5432"
+    networks:
+      - my-network
 
   eureka-server:
     build: ./eureka-server
@@ -40,24 +47,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  gateway:
-    build: ./gateway
-    container_name: gateway
-    ports:
-      - "8080:8080"
-    depends_on:
-      eureka-server:
-        condition: service_healthy
-      user-service:
-        condition: service_healthy
-      company-service:
-        condition: service_healthy
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    networks:
+      - my-network
 
   user-service:
     build: ./user-service
@@ -79,6 +70,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - my-network
 
   company-service:
     build: ./company-service
@@ -100,11 +93,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - my-network
 
-  config-server:
-    build: ./config-server
-    container_name: config-server
-    ports:
-      - "8888:8888"
-    depends_on:
-      - eureka-server

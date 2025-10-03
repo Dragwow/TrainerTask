@@ -1,13 +1,12 @@
 package com.yumimi.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
+import com.yumimi.db.response.UserResponse;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +17,7 @@ public class Company extends BaseEntity{
 
     private String name;
     private Integer budget;
-    @ElementCollection
-    @Column(name = "users_id")
-    private List<Long> usersId = new ArrayList<>();
 
+    @Transient
+    private List<UserResponse> users;
 }
